@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar libro | Biblioteca Pública</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6f4;
+            color: #263b35;
+            margin: 0;
+        }
+
+        header {
+            background: #245b4a;
+            color: white;
+            padding: 24px 8%;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 28px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        button, a {
+            display: inline-block;
+            padding: 11px 16px;
+            border-radius: 6px;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button {
+            background: #a83232;
+            color: white;
+        }
+
+        a {
+            background: #64756d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Biblioteca Pública</h1>
+    </header>
+
+    <main>
+        <h2>Confirmar eliminación</h2>
+
+        <p>
+            ¿Estás seguro de que deseas eliminar el libro
+            <strong>{{ libro.titulo }}</strong>?
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Sí, eliminar</button>
+            <a href="{% url 'lista_libros' %}">Cancelar</a>
+        </form>
+    </main>
+</body>
+</html>

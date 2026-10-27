@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios | Biblioteca Pública</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6f4;
+            color: #263b35;
+        }
+
+        header {
+            background: #245b4a;
+            color: white;
+            padding: 24px 8%;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+        }
+
+        header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .panel {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #00000010;
+        }
+
+        .acciones {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        input {
+            padding: 11px;
+            border: 1px solid #ccd6d0;
+            border-radius: 6px;
+            min-width: 250px;
+        }
+
+        button, .boton {
+            display: inline-block;
+            padding: 11px 15px;
+            border: none;
+            border-radius: 6px;
+            background: #245b4a;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .secundario {
+            background: #64756d;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+        }
+
+        th, td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #e5eae7;
+            text-align: left;
+        }
+
+        th {
+            background: #edf3ef;
+        }
+
+        td a {
+            color: #245b4a;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        .vacio {
+            text-align: center;
+            padding: 25px;
+            color: #64756d;
+        }
+
+        @media (max-width: 700px) {
+            .tabla-contenedor {
+                overflow-x: auto;
+            }
+
+            input {
+                min-width: 0;
+                width: 100%;
+                margin-bottom: 8px;
+            }
+
+            .acciones form {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Biblioteca Pública</h1>
+        <p>Administración de usuarios</p>
+    </header>
+
+    <main>
+        <section class="panel">
+            <div class="acciones">
+                <form method="get">
+                    <input
+                        type="text"
+                        name="buscar"
+                        placeholder="Buscar por nombre, documento o correo"
+                        value="{{ busqueda }}"
+                    >
+                    <button type="submit">Buscar</button>
+                    <a href="{% url 'lista_usuarios' %}"
+                       class="boton secundario">Limpiar</a>
+                </form>
+
+                <a href="{% url 'crear_usuario' %}" class="boton">
+                    + Registrar usuario
+                </a>
+            </div>
+
+            <h2>Usuarios registrados</h2>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre completo</th>
+                            <th>Documento</th>
+                            <th>Correo electrónico</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.nombre }}</td>
+                            <td>{{ usuario.documento }}</td>
+                            <td>{{ usuario.correo }}</td>
+                            <td>
+                                <a href="{% url 'editar_usuario' usuario.id %}">
+                                    Editar
+                                </a>
+                                |
+                                <a href="{% url 'eliminar_usuario' usuario.id %}">
+                                    Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="vacio">
+                                No hay usuarios registrados todavía.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <p>
+                <a href="{% url 'dashboard' %}" class="boton secundario">
+                    Volver al inicio
+                </a>
+            </p>
+        </section>
+    </main>
+</body>
+</html>

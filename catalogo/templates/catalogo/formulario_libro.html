@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo_pagina }} | Biblioteca Pública</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6f4;
+            color: #263b35;
+            margin: 0;
+        }
+
+        header {
+            background: #245b4a;
+            color: white;
+            padding: 24px 8%;
+        }
+
+        main {
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        form {
+            background: white;
+            padding: 28px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #00000010;
+        }
+
+        .campo {
+            margin-bottom: 20px;
+        }
+
+        .campo label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        .campo input:not([type="checkbox"]) {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccd6d0;
+            border-radius: 6px;
+        }
+
+        .campo input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .errorlist {
+            color: #a83232;
+        }
+
+        button, .boton {
+            display: inline-block;
+            padding: 11px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #245b4a;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .secundario {
+            background: #64756d;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Biblioteca Pública</h1>
+        <p>Gestión del catálogo</p>
+    </header>
+
+    <main>
+        <h2>{{ titulo_pagina }}</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% for campo in formulario %}
+            <div class="campo">
+                {{ campo.label_tag }}
+                {{ campo }}
+                {{ campo.errors }}
+
+                {% if campo.help_text %}
+                    <small>{{ campo.help_text }}</small>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button type="submit">Guardar libro</button>
+            <a href="{% url 'lista_libros' %}" class="boton secundario">
+                Cancelar
+            </a>
+        </form>
+    </main>
+</body>
+</html>

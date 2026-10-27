@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo | Biblioteca Pública</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6f4;
+            color: #263b35;
+            margin: 0;
+        }
+
+        header {
+            background: #245b4a;
+            color: white;
+            padding: 24px 8%;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .panel {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #00000010;
+        }
+
+        .acciones {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        input, button, .boton {
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid #ccd6d0;
+            font-size: 14px;
+        }
+
+        button, .boton {
+            background: #245b4a;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+        }
+
+        .secundario {
+            background: #64756d;
+        }
+
+        .eliminar {
+            background: #a83232;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 13px 10px;
+            border-bottom: 1px solid #e5eae7;
+            text-align: left;
+        }
+
+        th {
+            background: #edf3ef;
+        }
+
+        .estado {
+            font-weight: bold;
+        }
+
+        .disponible {
+            color: #247446;
+        }
+
+        .ocupado {
+            color: #a83232;
+        }
+
+        @media (max-width: 700px) {
+            .tabla-contenedor {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Biblioteca Pública</h1>
+        <p>Administración del catálogo de libros</p>
+    </header>
+
+    <main>
+        <section class="panel">
+            <div class="acciones">
+                <form method="get">
+                    <input
+                        type="text"
+                        name="buscar"
+                        placeholder="Buscar por título o autor"
+                        value="{{ busqueda }}"
+                    >
+                    <button type="submit">Buscar</button>
+                    <a href="{% url 'lista_libros' %}" class="boton secundario">
+                        Limpiar
+                    </a>
+                </form>
+
+                <a href="{% url 'crear_libro' %}" class="boton">
+                    + Registrar libro
+                </a>
+            </div>
+
+            <h2>Catálogo de libros</h2>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Autor</th>
+                            <th>Año</th>
+                            <th>Disponibilidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for libro in libros %}
+                        <tr>
+                            <td>{{ libro.titulo }}</td>
+                            <td>{{ libro.autor }}</td>
+                            <td>{{ libro.anio_publicacion|default_if_none:"—" }}</td>
+                            <td class="estado {% if libro.disponible %}disponible{% else %}ocupado{% endif %}">
+                                {% if libro.disponible %}
+                                    Disponible
+                                {% else %}
+                                    Prestado
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{% url 'editar_libro' libro.id %}">Editar</a>
+                                |
+                                <a href="{% url 'eliminar_libro' libro.id %}">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5">No hay libros registrados.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <p>
+                <a href="{% url 'dashboard' %}" class="boton secundario">
+                    Volver al inicio
+                </a>
+            </p>
+        </section>
+    </main>
+</body>
+</html>
